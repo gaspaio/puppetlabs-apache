@@ -19,11 +19,10 @@
 #
 class apache::params {
 
-  #$user          = 'www-data'
-  #$group         = 'www-data'
 
   $ssl           = true
   $template      = 'apache/vhost-default.conf.erb'
+  $tpl_envvars   = 'apache/envvars.erb' 
   $priority      = '25'
   $servername    = ''
   $serveraliases = ''
@@ -40,9 +39,8 @@ class apache::params {
       $mod_wsgi_package = 'mod_wsgi'
       $ssl_package = 'mod_ssl'
       $apache_dev  = 'httpd-devel'
-      $vdir = '/etc/httpd/conf.d/'
-      $default_user = 'apache'
-      $default_group = 'apache'
+      $confroot = '/etc/httpd/'
+      $vdir = "${confroot}conf.d/"
     }
     'ubuntu', 'debian': {
       $apache_name = 'apache2'
@@ -51,9 +49,8 @@ class apache::params {
       $mod_wsgi_package = 'libapache2-mod-wsgi'
       $ssl_package = 'apache-ssl'
       $apache_dev  = ['libaprutil1-dev', 'libapr1-dev', 'apache2-prefork-dev']
-      $vdir = '/etc/apache2/sites-enabled/'
-      $default_user = 'www-data'
-      $default_group = 'www-data'
+      $confroot = '/etc/apache2/'
+      $vdir = "${confroot}sites-enabled/"
     }
     default: {
       $apache_name = 'apache2'
@@ -63,16 +60,7 @@ class apache::params {
       $ssl_package = 'apache-ssl'
       $apache_dev  = 'apache-dev'
       $vdir = '/etc/apache2/sites-enabled/'
-      $default_user = 'www-data'
-      $default_group = 'www-data'
     }
   }
-  $user = $::apache_group ? {
-    undef   => 'www-data',
-    default => $::apache_group,
-  }
-  $group = $::apache_group ? {
-    undef   => 'www-data',
-    default => $::apache_group,
-  }
+  
 }
