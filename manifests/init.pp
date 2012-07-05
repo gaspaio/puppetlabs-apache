@@ -16,7 +16,6 @@ class apache(
   $httpd_user = 'www-data', 
   $httpd_group = 'www-data'
 ) inherits apache::params {
-  #include apache::params
 
   package { 'httpd':
     ensure => installed,
