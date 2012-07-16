@@ -22,7 +22,7 @@ class apache::params {
 
   $ssl           = true
   $template      = 'apache/vhost-default.conf.erb'
-  $tpl_envvars   = 'apache/envvars.erb' 
+  $tpl_envvars   = 'apache/envvars.erb'
   $priority      = '25'
   $servername    = ''
   $serveraliases = ''
@@ -31,8 +31,8 @@ class apache::params {
   $options       = 'Indexes FollowSymLinks MultiViews'
   $vhost_name    = '*'
 
-  case $::operatingsystem {
-    'centos', 'redhat', 'fedora', 'scientific': {
+  case $::osfamily {
+    'RedHat': {
       $apache_name = 'httpd'
       $php_package = 'php'
       $mod_python_package = 'mod_python'
@@ -42,7 +42,7 @@ class apache::params {
       $confroot = '/etc/httpd/'
       $vdir = "${confroot}conf.d/"
     }
-    'ubuntu', 'debian': {
+    'Debian', default: {
       $apache_name = 'apache2'
       $php_package = 'libapache2-mod-php5'
       $mod_python_package = 'libapache2-mod-python'
@@ -52,15 +52,6 @@ class apache::params {
       $confroot = '/etc/apache2/'
       $vdir = "${confroot}sites-enabled/"
     }
-    default: {
-      $apache_name = 'apache2'
-      $php_package = 'libapache2-mod-php5'
-      $mod_python_package = 'libapache2-mod-python'
-      $mod_wsgi_package = 'libapache2-mod-wsgi'
-      $ssl_package = 'apache-ssl'
-      $apache_dev  = 'apache-dev'
-      $vdir = '/etc/apache2/sites-enabled/'
-    }
   }
-  
 }
+
