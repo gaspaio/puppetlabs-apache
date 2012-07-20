@@ -74,11 +74,13 @@ define apache::vhost(
   file {"${apache::params::vdir}/${priority}-${name}-$docroot":
     path => $docroot,
     ensure => directory,
+    require => Package['httpd'],
   }
 
   file {"${apache::params::vdir}/${priority}-${name}-$logroot":
     path => $logroot,
     ensure => directory,
+    require => Package['httpd'],
   }
 
   file { "${priority}-${name}.conf":
@@ -95,15 +97,15 @@ define apache::vhost(
       notify  => Service['httpd'],
   }
 
-  if $configure_firewall {
-    if ! defined(Firewall["0100-INPUT ACCEPT $port"]) {
-      @firewall {
-        "0100-INPUT ACCEPT $port":
-          action => 'accept',
-          dport  => '$port',
-          proto  => 'tcp'
-      }
-    }
-  }
+#  if $configure_firewall {
+#    if ! defined(Firewall["0100-INPUT ACCEPT $port"]) {
+#      @firewall {
+#        "0100-INPUT ACCEPT $port":
+#          action => 'accept',
+#          dport  => '$port',
+#          proto  => 'tcp'
+#      }
+#    }
+#  }
 }
 
