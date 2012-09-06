@@ -17,6 +17,6 @@ class apache::php {
 
   package { 'apache_php_package':
     ensure => present,
-    name   => $apache::params::php_package,
+    name   => $php_package,
   }
 }
